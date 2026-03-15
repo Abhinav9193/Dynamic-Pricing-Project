@@ -34,21 +34,26 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) authentication
-                .getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        User user = userRepository.findByEmail(loginRequest.getEmail()).get();
-
-        return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getEmail(), roles));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+    
+            org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) authentication
+                    .getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+    
+            User user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Error: User authenticated but not found in database."));
+    
+            return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getEmail(), roles));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Error: " + e.getMessage());
+        }
     }
 
     @Autowired
