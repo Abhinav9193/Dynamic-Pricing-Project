@@ -32,7 +32,7 @@
 /ml-service/ENV/
 /ml-service/.pytest_cache/
 /ml-service/.ipynb_checkpoints/
-/ml-service/model.pkl
+# /ml-service/model.pkl
 
 # IDEs
 .idea/
