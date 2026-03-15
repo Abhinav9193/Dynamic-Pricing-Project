@@ -39,7 +39,5 @@
 .vscode/
 *.swp
 *.swo
-*.xml
-# Keep pom.xml and other necessary xmls? 
-# I should be careful not to ignore pom.xml. 
-# *.xml is too broad.
+# *.xml - Removed broad ignore to keep pom.xml
+
