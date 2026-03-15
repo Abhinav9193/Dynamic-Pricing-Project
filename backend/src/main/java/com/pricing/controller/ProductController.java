@@ -5,6 +5,7 @@ import com.pricing.repository.*;
 import com.pricing.service.PricingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class ProductController {
     @Autowired private SaleRepository saleRepository;
     @Autowired private CompetitorPriceRepository competitorPriceRepository;
     @Autowired private PriceHistoryRepository priceHistoryRepository;
+    @Autowired private PriceRecommendationRepository recommendationRepository;
 
     @GetMapping
     public List<Product> getAllProducts() {
@@ -39,11 +41,15 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long id) {
-        // Delete dependent data first
+        // Delete dependent data first to satisfy foreign key constraints
         saleRepository.deleteByProduct_Id(id);
         competitorPriceRepository.findByProductId(id).forEach(c -> competitorPriceRepository.delete(c));
+        priceHistoryRepository.deleteByProduct_Id(id);
+        recommendationRepository.deleteByProduct_Id(id);
+        
         productRepository.deleteById(id);
         return ResponseEntity.ok("Product deleted");
     }

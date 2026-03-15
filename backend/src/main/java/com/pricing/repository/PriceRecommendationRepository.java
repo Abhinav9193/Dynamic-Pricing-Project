@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PriceRecommendationRepository extends JpaRepository<PriceRecommendation, Long> {
     List<PriceRecommendation> findByProductId(Long productId);
+    void deleteByProduct_Id(Long productId);
 }
