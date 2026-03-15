@@ -1,0 +1,45 @@
+# Common
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+
+# Frontend (Next.js)
+/frontend/.next/
+/frontend/node_modules/
+/frontend/out/
+/frontend/build/
+/frontend/.vercel/
+
+# Backend (Maven/Spring Boot)
+/backend/target/
+/backend/bin/
+/backend/*.jar
+/backend/*.war
+/backend/.project
+/backend/.classpath
+/backend/.settings/
+/backend/.factorypath
+/backend/.mvn/wrapper/maven-wrapper.jar
+
+# ML Service (Python)
+/ml-service/__pycache__/
+/ml-service/*.py[cod]
+/ml-service/*$py.class
+/ml-service/.venv/
+/ml-service/venv/
+/ml-service/ENV/
+/ml-service/.pytest_cache/
+/ml-service/.ipynb_checkpoints/
+/ml-service/model.pkl
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*.xml
+# Keep pom.xml and other necessary xmls? 
+# I should be careful not to ignore pom.xml. 
+# *.xml is too broad.
