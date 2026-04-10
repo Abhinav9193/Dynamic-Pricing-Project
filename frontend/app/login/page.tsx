@@ -94,7 +94,7 @@ const Login = () => {
                 <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900">
                     <div className="flex items-center gap-2 mb-2">
                         <span className="text-lg">🔑</span>
-                        <p className="font-bold text-amber-800">Demo Credentials for Recruiters</p>
+                        <p className="font-bold text-amber-800">Demo Credentials for Testing</p>
                     </div>
                     <div className="space-y-1 font-mono text-xs bg-white/60 rounded-md p-2.5 border border-amber-100">
                         <p><span className="text-amber-600 font-semibold">Email:</span> demo@shop.com</p>
