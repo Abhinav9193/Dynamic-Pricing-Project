@@ -4,6 +4,7 @@ import com.pricing.model.*;
 import com.pricing.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,17 @@ public class DataSeeder implements CommandLineRunner {
     @Autowired private SaleRepository saleRepository;
     @Autowired private CompetitorPriceRepository competitorPriceRepository;
     @Autowired private PriceRecommendationRepository recommendationRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private CompanyRepository companyRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         System.out.println(">>> SEEDER: Power-Syncing Marketplace Intelligence...");
+
+        // 0. Seed demo user for recruiters / testers
+        seedDemoUser();
         
         // 1. Repair core inventory
         ensureAndRepairShoe("Air Zoom Pegasus", "Nike", "Running", "Classic cushioning.", "/images/shoes/nike.png", "UK 9", "Blue", 3800.0, 4999.0, 25);
@@ -92,5 +99,28 @@ public class DataSeeder implements CommandLineRunner {
                 recommendationRepository.save(new PriceRecommendation(p, Math.round(p.getCurrentPrice() * 1.05), 10, 5000.0, LocalDateTime.now()));
             }
         }
+    }
+
+    private void seedDemoUser() {
+        String demoEmail = "demo@shop.com";
+        if (userRepository.findByEmail(demoEmail).isPresent()) {
+            System.out.println(">>> SEEDER: Demo user already exists, skipping.");
+            return;
+        }
+
+        // Create a demo company
+        Company demoCompany = new Company("Demo Shoe Store", "DEMO-2024-001", "Retail / Footwear", "New Delhi, India");
+        demoCompany = companyRepository.save(demoCompany);
+
+        // Create demo admin user with known credentials
+        User demoUser = new User(
+                "Demo Admin",
+                demoEmail,
+                passwordEncoder.encode("demo1234"),
+                "ADMIN",
+                demoCompany
+        );
+        userRepository.save(demoUser);
+        System.out.println(">>> SEEDER: Demo user created — demo@shop.com / demo1234");
     }
 }

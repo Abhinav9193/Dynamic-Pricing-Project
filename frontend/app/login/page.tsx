@@ -91,9 +91,22 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div className="mt-6 p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-800 flex flex-col items-center text-center">
-                    <p className="font-bold mb-1">Welcome to a Fresh Start!</p>
-                    <p>Since this is a fresh instance, you must first register your Shop / Company below to get access credentials.</p>
+                <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-lg">🔑</span>
+                        <p className="font-bold text-amber-800">Demo Credentials for Recruiters</p>
+                    </div>
+                    <div className="space-y-1 font-mono text-xs bg-white/60 rounded-md p-2.5 border border-amber-100">
+                        <p><span className="text-amber-600 font-semibold">Email:</span> demo@shop.com</p>
+                        <p><span className="text-amber-600 font-semibold">Password:</span> demo1234</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => { setEmail('demo@shop.com'); setPassword('demo1234'); }}
+                        className="mt-3 w-full py-2 bg-amber-500 text-white rounded-lg text-xs font-bold hover:bg-amber-600 transition-colors cursor-pointer"
+                    >
+                        ⚡ Use Demo Credentials
+                    </button>
                 </div>
 
                 <div className="mt-4 text-center text-sm text-slate-500">
